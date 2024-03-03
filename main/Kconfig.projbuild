@@ -1,0 +1,127 @@
+menu "MQTT Broker User Configuration"
+
+    config BROKER_URI
+        string "Broker URL"
+        default "mqtt3.thingspeak.com"
+        help
+            URL of an mqtt broker which this example connects to.
+
+    config BROKER_PORT
+    int
+    default 8883
+    help
+        The port of an mqtt broker which this example connects to.
+
+    config BROKER_CERTIFICATE_OVERRIDE
+        string "Broker certificate override"
+        default ""
+        help
+            Please leave empty if broker certificate included from a textfile; otherwise fill in a base64 part of PEM
+            format certificate
+
+    config BROKER_CERTIFICATE_OVERRIDDEN
+        bool
+        default y if BROKER_CERTIFICATE_OVERRIDE != ""
+
+    config BROKER_BIN_SIZE_TO_SEND
+        # This option is not visible and is used only to set parameters for example tests
+        # Here we configure the data size to send and to be expected in the python script
+        int
+        default 20000
+
+endmenu
+
+menu "WiFi User Configuration"
+    config WIFI_SSID
+        string "The WiFi Router SSID Value"
+        default ""
+        help
+            The SSID of the Wifi Router to connect to.
+
+    config WIFI_PASS
+        string "The WiFi Router Password"
+        default ""
+        help
+            The password required to connect to the WiFi Router.
+endmenu
+
+
+menu "Thingspeak User Configuration"
+    config THINGSPEAK_MQTT_USERNAME
+        string "The MQTT username for thingspeak"
+        default ""
+        help
+            The MQTT username for thingspeak
+
+    config THINGSPEAK_MQTT_CLIENT_ID
+        string "The MQTT client id for thingspeak"
+        default ""
+        help
+            The MQTT client id for thingspeak
+
+    config THINGSPEAK_MQTT_PASSWORD
+        string "The MQTT password for thingspeak"
+        default ""
+        help
+            The MQTT password for thingspeak
+
+    config THINGSPEAK_CHANNEL_ID
+        string "The Thingspeak channel ID to use"
+        default ""
+        help
+            The Thingspeak channel ID to use when publishing and receiving data.
+endmenu
+
+menu "BME680 User Configuration"
+    choice BME680_I2C_ADDR
+        prompt "Select BME680 I2C address to use"
+        default BME680_I2C_ADDR_0
+        help
+            Select BME680 I2C address to use
+        config BME680_I2C_ADDR_0
+            bool "BME680_I2C_ADDR_0 (0x76)"
+            help 
+                This is the i2c address to use if ADDR pin is NOT grounded
+        
+        config BME680_I2C_ADDR_1
+            bool "BME680_I2C_ADDR_1 (0x77)"
+            help 
+                This is the i2c address to use if ADDR pin is grounded
+    endchoice
+
+    config BME680_I2C_MASTER_SCL
+        int "SCL GPIO Number"
+        default 6 if IDF_TARGET_ESP32C3
+        default 19 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+        help
+            GPIO number for I2C master clock line
+
+    config BME680_I2C_MASTER_SDA
+        int "SDA GPIO Number"
+        default 5 if IDF_TARGET_ESP32C3
+        default 18 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+        help
+            GPIO number for I2C master data line
+endmenu
+
+menu "Check WX menu"
+    
+    config CHECKWX_URL
+        string "The URL of checkwx api"
+        default "api.checkwx.com"
+        help
+            The URL of checkwx api
+            
+    config CHECKWX_API_KEY
+        string "The API KEY to use to connect to CheckWX api"
+        default ""
+        help
+            The API KEY to use to connect to CheckWX api
+
+    config CHECKWX_ICAO
+        string "The METAR ICAO of the airport to use"
+        default ""
+        help
+            The METAR ICAO of the airport to use for e.g. EGLL for London Heathrow
+    
+endmenu
